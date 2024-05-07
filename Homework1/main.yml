@@ -1,0 +1,63 @@
+- hosts: all
+  tasks:
+    - name: Install apache httpd
+      apt:
+        name: 
+          - apache2
+          - git
+          - tree
+         
+        state: latest
+
+    - name: Start service apache2, if not started
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Create groups
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - kaizen
+        - devops
+        - qa
+
+
+
+    - name: Create user and add to groups
+      user:
+        name: "Eldos"
+        groups: kaizen, qa
+        state: present
+
+    - name: Create user tester and add to qa group
+      user:
+        name: tester
+        groups: qa
+        state: present
+
+
+    - name: Copy files to remote machine
+      copy:
+        src: ~/.
+        dest: /root/
+        remote_src: yes
+
+
+
+
+  
+
+
+# Installs apache, tree and git packages on Ubuntu VM  on a remote machine
+# Starts apache and make it permanent  on a remote machine
+# Creates groups: kaizen, devops, qa  on a remote machine
+# Creates user <your name> and add to groups: kaizen, qa  on a remote machine
+# Creates user tester and add to qa group on a remote machine
+# Copies all files from Homework1 folder to a remote machine’s root user’s home folder.
+
+# Confirm sshing to a remote machine you can see all packages, users, groups and files.
+
+# Paste GitHub url in the comment box
